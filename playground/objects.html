@@ -45,9 +45,9 @@
       // REFERENCE v. VALUE
       /*
     -Comparing variables compares values
-    -Comparing object compares references
-    -If variables are updated, (var1 = var2), var1 gets the value of var1 (Changes to var 1 after it won't affect var 2)
-    -If objects get updated, (obj1 = obj2), obj1 references (points to) obj2 (Changes to obj 2 after it WILL affect obj 1 and vice versa)
+    -Comparing objects compares references
+    -If variables are updated, (var1 = var2), var1 gets the value of var2 (Changes to var2 after won't affect var1)
+    -If objects get updated, (obj1 = obj2), obj1 references (points to) obj2 (Changes to obj 2 after WILL affect obj 1 and vice versa)
 
     -Spread operator can be used to make a copy of another object (const obj1 = {...obj2};)
     OLD WAY: const obj1 = Object.assign({}, obj2);
