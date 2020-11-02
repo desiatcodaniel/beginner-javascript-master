@@ -11,6 +11,6 @@
  */
 // console.log(age); // results to undefined
 // console.log(cool); // results to reference error
-// const age = 0;
+const age = 0;
 
 // Assigning function into a variable is not hoisted

@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title></title>
+    <link rel="stylesheet" href="../base.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title></title>
-  <link rel="stylesheet" href="../base.css" />
-</head>
+  <body>
+    <input type="text" name="first" value="wes" />
 
-<body>
-  <input type="text" name="first" value="wes" />
+    <script src="https://unpkg.com/lodash"></script>
+    <script>
+      // Objects are used for when the order of the properties does not matter
+      const age = 100;
+      // Object literal syntax
+      const person = {
+        // Can have properties with a dash/space in it (var-iable)
+        age, // Similar to age:age;
+        name: 'wes',
+        clothes: {
+          shirts: 20,
+          pants: 2,
+        }, // Object nesting
+        'cool-dude': true,
+        777: true, // Always add a comma dangle to anticipate more properties and methods
+        sayHello() {
+          return `Hello, I am ${this.name}`;
+        }, // SAME as a regular function
+        arrowFunc: () => `can't use this`, // Arrow functions can't use this keyword
+      };
+      // properties might not be in order when accessed
 
-  <script src="https://unpkg.com/lodash"></script>
-  <script>
-    // Objects are used for when the order of the properties does not matter
-    const age = 100;
-    // Object literal syntax
-    const person = {
-      // Can have properties with a dash/space in it (var-iable)
-      age, // Similar to age:age;
-      name: 'wes',
-      clothes: {
-        shirts: 20,
-        pants: 2,
-      }, // Object nesting
-      'cool-dude': true,
-      '777': true, // Always add a comma dangle to anticipate more properties and methods
-      sayHello() {
-        return `Hello, I am ${this.name}`;
-      }, // SAME as a regular function
-      arrowFunc: () => `can't use this`, // Arrow functions can't use this keyword
-    };
-    // properties might not be in order when accessed
+      // Properties can be changed/added, but the object itself cannot be redefined (Cannot assign person to another set of properties)
+      person.job = 'dev';
+      person.age = 10;
 
-    // Properties can be changed/added, but the object itself cannot be redefined (Cannot assign person to another set of properties)
-    person.job = 'dev';
-    person.age = 10;
+      const frozenPerson = Object.freeze(person); // Assigning person object to a REAL CONSTANT (even properties cannot be changed)
+      console.log(frozenPerson);
 
-    const frozenPerson = Object.freeze(
-    person); // Assigning person object to a REAL CONSTANT (even properties cannot be changed)
-    console.log(frozenPerson);
+      // Properly delete a property(Not setting a value to null or undefined)
+      delete person.clothes;
 
-    // Properly delete a property(Not setting a value to null or undefined)
-    delete person.clothes;
-
-    // REFERENCE v. VALUE
-    /*
+      // REFERENCE v. VALUE
+      /*
     -Comparing variables compares values
     -Comparing object compares references
     -If variables are updated, (var1 = var2), var1 gets the value of var1 (Changes to var 1 after it won't affect var 2)
@@ -64,36 +62,35 @@
     - Regular variables are passed by value
     - Object properties are passed by reference (modifying data inside the function WILL also modify data on the object referenced)
     */
-    const obj1 = {
-      name: 'daniel',
-      age: 24,
-    };
-    // eslint-disable-next-line no-undef
-    const obj3 = _.cloneDeep(obj1);
-    obj1.age = 10;
-    console.log(obj3.age);
+      const obj1 = {
+        name: 'daniel',
+        age: 24,
+      };
+      // eslint-disable-next-line no-undef
+      const obj3 = _.cloneDeep(obj1);
+      obj1.age = 10;
+      console.log(obj3.age);
 
-    const meatInventory = {
-      bacon: 2,
-      sausage: 3,
-    };
+      const meatInventory = {
+        bacon: 2,
+        sausage: 3,
+      };
 
-    const veggieInventory = {
-      lettuce: 5,
-      tomatoes: 3,
-    };
+      const veggieInventory = {
+        lettuce: 5,
+        tomatoes: 3,
+      };
 
-    // Copied the values of the original objects
-    const inventory = {
-      ...meatInventory,
-      ...veggieInventory,
-    };
-    veggieInventory.lettuce = 2000;
-    console.log(veggieInventory);
+      // Copied the values of the original objects
+      const inventory = {
+        ...meatInventory,
+        ...veggieInventory,
+      };
+      veggieInventory.lettuce = 2000;
+      console.log(veggieInventory);
 
-    // Will not be updated even if lettuce in veggieInventory was updated
-    console.log(inventory);
-  </script>
-</body>
-
+      // Will not be updated even if lettuce in veggieInventory was updated
+      console.log(inventory);
+    </script>
+  </body>
 </html>
