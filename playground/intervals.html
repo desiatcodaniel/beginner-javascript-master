@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Intervals and Timers</title>
+  <link rel="stylesheet" href="../base.css">
+</head>
+
+<body>
+  <script>
+    function buzzer() {
+      console.log('ENGGGGG');
+    }
+
+    function sayHi() {
+      console.log('hello');
+    }
+
+    function setImmediateInterval(funcToRun, ms) {
+      // RUN the function immediately
+      funcToRun();
+      // THEN run the function every set interval
+      return setInterval(funcToRun, ms);
+    }
+    // first parameter is the callback, second is number of ms to run it after
+
+    // Ran asyncronously(callback calls it later so JS processes other scripts while it's counting down)
+    // CALLBACK - comeback and call it at a later point in time
+    // setTimeout(buzzer, 5000); // Run buzzer after 5seconds
+
+    setImmediateInterval(buzzer, 3000);
+    setImmediateInterval(sayHi, 2000);
+    // setInterval(buzzer,5000); // Run buzzer every 5seconds. there is no option to tell the interval to run first instance THEN run every __ ms
+
+    function destroy() {
+      document.body.innerHTML = `<p>DESTROYED</p>`;
+    }
+
+    // SAVE reference of the timer to a variable if it needs to be stopped at some point
+    const bombTimer = setTimeout(destroy, 5000);
+
+    window.addEventListener('click', function () {
+      console.log('WORLD SAVED!');
+      clearTimeout(bombTimer);
+    });
+
+    const pirate = setInterval(function () {
+      console.log('King of Pirates!');
+    }, 1000);
+
+    setTimeout(function () {
+      clearInterval(pirate);
+    }, 10000);
+  </script>
+</body>
+
+</html>

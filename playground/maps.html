@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Maps</title>
+  <link rel="stylesheet" href="../base.css">
+</head>
+
+<body>
+  <ul class="prizes"></ul>
+  <script>
+    /*
+    MAP v. OBJECT
+    -Use a map if the order of items/properties is important
+    -Use an object when methods are going to be incorporated(Maps are only for storing data)
+    -Use an object if it is going to be parsed as a JSON file
+    -JSON does not handle map JSON.stringify(myMap) - DOES NOT WORK
+    -Convert map to object before converting to JSON (Object.fromEntries(myMap);)
+    */
+    const person1 = {
+      name: 'Desiatco Daniel',
+      age: '24',
+    };
+    const myMap = new Map();
+
+    // .set(type, value)
+    myMap.set('name', 'wes');
+    myMap.set(100, 'THIS NUMBER YEAH');
+
+    // Adding objects as keys in maps
+    myMap.set(person1, 'Daniel');
+    console.log(myMap);
+
+    // Practical use
+    // Maps will stay in order the way they were declared
+    const score = 100;
+    const prizes = new Map();
+    prizes.set(100, 'Box');
+    prizes.set(200, 'Ball');
+    prizes.set(1000, 'Shoes');
+    // Select UL
+    const ul = document.querySelector('.prizes');
+
+    // first item = points, second item = prize(for each item)
+    for (const [points, prize] of prizes) {
+      console.log(points, prize);
+      const li = `<li>${points} - ${prize}</li>`;
+      ul.insertAdjacentHTML(`beforeend`, li);
+    }
+
+    // for (const prize of prizes) {
+    //   // Display all prizes
+    //   console.log(...prize);
+    // }
+
+    // prizes.forEach(entry => {
+    //   ul.innerHTML = entry;
+    // });
+    // .has()
+    // .delete()
+    // myMap.delete('name');
+  </script>
+</body>
+
+</html>

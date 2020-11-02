@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title></title>
+  <link rel="stylesheet" href="../base.css" />
+</head>
+
+<body>
+  <input type="text" name="first" value="wes" />
+
+  <script src="https://unpkg.com/lodash"></script>
+  <script>
+    // Objects are used for when the order of the properties does not matter
+    const age = 100;
+    // Object literal syntax
+    const person = {
+      // Can have properties with a dash/space in it (var-iable)
+      age, // Similar to age:age;
+      name: 'wes',
+      clothes: {
+        shirts: 20,
+        pants: 2,
+      }, // Object nesting
+      'cool-dude': true,
+      '777': true, // Always add a comma dangle to anticipate more properties and methods
+      sayHello() {
+        return `Hello, I am ${this.name}`;
+      }, // SAME as a regular function
+      arrowFunc: () => `can't use this`, // Arrow functions can't use this keyword
+    };
+    // properties might not be in order when accessed
+
+    // Properties can be changed/added, but the object itself cannot be redefined (Cannot assign person to another set of properties)
+    person.job = 'dev';
+    person.age = 10;
+
+    const frozenPerson = Object.freeze(
+    person); // Assigning person object to a REAL CONSTANT (even properties cannot be changed)
+    console.log(frozenPerson);
+
+    // Properly delete a property(Not setting a value to null or undefined)
+    delete person.clothes;
+
+    // REFERENCE v. VALUE
+    /*
+    -Comparing variables compares values
+    -Comparing object compares references
+    -If variables are updated, (var1 = var2), var1 gets the value of var1 (Changes to var 1 after it won't affect var 2)
+    -If objects get updated, (obj1 = obj2), obj1 references (points to) obj2 (Changes to obj 2 after it WILL affect obj 1 and vice versa)
+
+    -Spread operator can be used to make a copy of another object (const obj1 = {...obj2};)
+    OLD WAY: const obj1 = Object.assign({}, obj2);
+    --All of the above object copies are shallow copies
+
+    -LODASH has a bunch of methods some of which are for cloning objects. LOAD the lodash URL first on another script tag
+
+    const person3 = _.cloneDeep(person1);
+    -Now making changes to person3 will not affect person1
+
+    PASSING INTO FUNCTION
+    - Regular variables are passed by value
+    - Object properties are passed by reference (modifying data inside the function WILL also modify data on the object referenced)
+    */
+    const obj1 = {
+      name: 'daniel',
+      age: 24,
+    };
+    // eslint-disable-next-line no-undef
+    const obj3 = _.cloneDeep(obj1);
+    obj1.age = 10;
+    console.log(obj3.age);
+
+    const meatInventory = {
+      bacon: 2,
+      sausage: 3,
+    };
+
+    const veggieInventory = {
+      lettuce: 5,
+      tomatoes: 3,
+    };
+
+    // Copied the values of the original objects
+    const inventory = {
+      ...meatInventory,
+      ...veggieInventory,
+    };
+    veggieInventory.lettuce = 2000;
+    console.log(veggieInventory);
+
+    // Will not be updated even if lettuce in veggieInventory was updated
+    console.log(inventory);
+  </script>
+</body>
+
+</html>

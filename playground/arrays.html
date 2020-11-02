@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title> </title>
+  <link rel="stylesheet" href="../base.css" />
+</head>
+
+<body>
+  <script>
+    /*
+    Array v. Object v. Map
+    
+    Array is also an object, no keys
+    -Uses an index, each value inside is called an item
+    -Map and Object uses size, Array uses length
+
+    Mutability
+    -Mutable methods perform mutations
+    
+    Immutability
+    -Immutable methods does not change anything 
+
+    */
+
+    const names = ['daniel', 'kat', 'joy'];
+    names.push('lux'); // mutable way to add to end
+    const names2 = [...names, 'lux']; // Adding an item without changing the original array
+    names.unshift('pop'); // mutable way to add to front
+    const name3 = ['pop', ...names];
+
+    // Slice(immutable) and Splice(mutable)
+    // Splice = (beginning index, count of items to be spliced)
+    // names.splice(0, 2);
+
+    // Add in between
+    const cars = ['accord', 'camry', 'corolla', 'civic'];
+    const newCars = [
+      ...cars.slice(0, 2), // Include 0 and 1 item
+      'M5', // Insert in the middle
+      ...cars.slice(2), // Include the rest FROM index 2
+    ];
+    const newCars2 = [...newCars.slice(0, 3), ...newCars.slice(4)]; // Remove index 3 item
+
+    // searching through an array of objects
+    const comments = [{
+        text: 'cool',
+        id: 232,
+      },
+      {
+        text: 'kat',
+        id: 123,
+      },
+      {
+        text: 'bad',
+        id: 222,
+      },
+      {
+        text: 'hey',
+        id: 331,
+      },
+      {
+        text: 'great',
+        id: 451,
+      },
+    ];
+
+    function deleteComment(id, comments) {
+      const commentIndex = comments.findIndex(comment => comment.id === id);
+      return [
+        ...comments.slice(0, commentIndex),
+        ...comments.slice(commentIndex + 1),
+      ];
+    }
+
+    const newComments = deleteComment(222, comments);
+    console.log(newComments);
+
+    const katIndex = names.findIndex(name => name === 'kat');
+
+    // Without spread operator(...), it will just create two arrays inside the array
+    const newNamesWithoutKat = [
+      // Get everything up to katIndex
+      ...names.slice(0, katIndex),
+      // Everything after katIndex
+      ...names.slice(katIndex + 1),
+    ]; // Can also use .flat() which is a mutable method to make it into a single array
+
+    console.log(newNamesWithoutKat);
+    // // Mutable Method
+    // const numbers = [1, 2, 3, 4, 5, 6, 7];
+
+    // // Immutable Method
+    // // Slice takes a portion of the array and assign it into a new array
+    // // varAr.slice(1,4); - Gets the portion from index 1 to BEFORE index 4
+    // const numSlice = numbers.slice(2, 4);
+
+    // // Using mutation method without mutating the original array
+    // // Take a copy of the original array
+    // const numbersReversed = [...numbers].reverse();
+    // // numbersReversed.reverse();
+  </script>
+</body>
+
+</html>
