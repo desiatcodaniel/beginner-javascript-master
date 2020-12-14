@@ -64,12 +64,27 @@ function mirrorToLocalStorage() {
   localStorage.setItem('items', JSON.stringify(items));
 }
 
+// Restore items from localStorage when the page is loaded
+function restoreFromLocalStorage() {
+  // Use JSON.parse to pull the items from local storage
+  const lsItems = JSON.parse(localStorage.getItem('items'));
+  // Push all items into items array
+  // lsItems.forEach(item => items.push(item));
+  items.push(...lsItems); // Using the spread operator to push all items into the array
+  // Check if localStorage contains something and dispatch event to display it
+  if (lsItems.length) {
+    list.dispatchEvent(new CustomEvent('itemsUpdated'));
+  }
+}
 // Listen for a submit event on the form
 shoppingForm.addEventListener('submit', handleSubmit);
 
 // Listen to the custom event that was dispatched in handleSubmit and call functions that need it
 list.addEventListener('itemsUpdated', displayItems);
 list.addEventListener('itemsUpdated', mirrorToLocalStorage);
+
+// Run restore on page load
+restoreFromLocalStorage();
 // Listen for input
 
 // Keep track of all the shopping list items and whether they are complete
