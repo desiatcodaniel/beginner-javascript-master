@@ -10,7 +10,7 @@ const list = document.querySelector('.list');
 // State = a bunch of data that reflects the state of the application
 // e.g. state in this case is going to contain the status, id, and item descriptions
 
-const items = [];
+let items = [];
 
 function displayItems() {
   // Create necessary html to insert into the page
@@ -18,9 +18,13 @@ function displayItems() {
   const html = items
     .map(
       item => `<li class="shopping-item">
-        <input type="checkbox">
+        <input value="${item.id}" type="checkbox" ${
+        item.complete ? 'checked' : ''
+      } >
         <span class="itemName">${item.name}</span>
-        <button aria-label="Remove ${item.name}">&times;</button>
+        <button aria-label="Remove ${item.name}" value="${
+        item.id
+      }">&times;</button>
         </li>`
     )
     .join(''); // MAP each item and join them to make one string
@@ -76,6 +80,24 @@ function restoreFromLocalStorage() {
     list.dispatchEvent(new CustomEvent('itemsUpdated'));
   }
 }
+
+const markAsComplete = id => {
+  // Find the selected item
+  const itemClicked = items.find(item => item.id === id);
+
+  // Toggle complete boolean of the item
+  itemClicked.complete = !itemClicked.complete;
+
+  console.log(items);
+  list.dispatchEvent(new CustomEvent('itemsUpdated'));
+};
+// Delete item based on passed in id (clicked from the list)
+const deleteItem = id => {
+  // Filter to remove the specific item based on id
+  // Can not use strict comparison as id is being stored as a number and the value is being stored as a string
+  items = items.filter(item => item.id !== id);
+  list.dispatchEvent(new CustomEvent('itemsUpdated'));
+};
 // Listen for a submit event on the form
 shoppingForm.addEventListener('submit', handleSubmit);
 
@@ -85,8 +107,22 @@ list.addEventListener('itemsUpdated', mirrorToLocalStorage);
 
 // Run restore on page load
 restoreFromLocalStorage();
-// Listen for input
 
+// Listen for input (clicks to delete/check/uncheck items) - Event Delegation
+// Listen for the click on the list but then delegate the click over to the button if that is what was clicked
+// This makes the event listener dynamic instead of static such as selecting current items which makes new items not able to be part of selected elements
 // Keep track of all the shopping list items and whether they are complete
-
 // Render out all items
+list.addEventListener('click', e => {
+  // Parse id to int so it can be strictly compared
+  const id = parseInt(e.target.value);
+
+  // Call delete function if button is clicked
+  if (e.target.matches('button')) {
+    deleteItem(id);
+  }
+  // Call toggle complete function if checkbox is clicked
+  if (e.target.matches('input[type="checkbox"]')) {
+    markAsComplete(id);
+  }
+});
