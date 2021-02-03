@@ -13,6 +13,8 @@ function Gallery(gallery) {
   // next and prev buttons are in modal
   const next = modal.querySelector('.next');
   const prev = modal.querySelector('.prev');
+  // current image to record which part of the gallery is being displayed
+  let currentImg;
 
   // Open Modal function
   function openModal() {
@@ -22,6 +24,13 @@ function Gallery(gallery) {
     }
     // Make the modal show up by adding class
     modal.classList.add('open');
+
+    // Event Listeners to be bound when we open the modal
+    // Key up is not bound to modal selector
+    window.addEventListener('keyup', handleKeyUp);
+    // Listener for next and prev
+    next.addEventListener('click', showNextImg);
+    prev.addEventListener('click', showPrevImg);
   }
 
   // Close Modal function
@@ -31,6 +40,14 @@ function Gallery(gallery) {
     // TODO: add eventhandler for escape key to close modal
   }
 
+  // Functions to show next and prev images
+  function showNextImg() {
+    showImg(currentImg.nextElementSibling || gallery.firstElementChild);
+  }
+
+  function showPrevImg() {
+    showImg(currentImg.previousElementSibling || gallery.lastElementChild);
+  }
   // Function to make sure click event is outside the modal
   function handleClickOutside(e) {
     if (e.currentTarget === e.target) closeModal();
@@ -38,7 +55,10 @@ function Gallery(gallery) {
 
   // Function to make sure keyup is useable for prev, next, and escape
   function handleKeyUp(e) {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') return closeModal();
+    if (e.key === 'ArrowLeft') return showPrevImg();
+    if (e.key === 'ArrowRight') return showNextImg();
+    if (e.key === 'Enter') return showImg(e.target);
   }
   // Function to show the image in the modal
   function showImg(el) {
@@ -54,6 +74,8 @@ function Gallery(gallery) {
     modal.querySelector('h2').textContent = el.title;
     // Use the clicked image data-description
     modal.querySelector('figure p').textContent = el.dataset.description;
+    // Update current image
+    currentImg = el;
 
     // Call openModal
     openModal();
@@ -65,9 +87,12 @@ function Gallery(gallery) {
     image.addEventListener('click', e => showImg(e.currentTarget))
   );
 
+  // Loop over each image to display if enter was clicked
+  images.forEach(image => {
+    image.addEventListener('keyup', handleKeyUp);
+  });
+
   modal.addEventListener('click', handleClickOutside);
-  // Key up is not bound to modal selector
-  window.addEventListener('keyup', handleKeyUp);
 }
 
 // Call gallery from 2 galleries
