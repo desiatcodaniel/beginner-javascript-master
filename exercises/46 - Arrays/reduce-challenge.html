@@ -351,16 +351,30 @@ One Piece Wiki is a FANDOM Anime Community.`;
 // Create regex that only allows for numbers and letters
 const regex = /\w/;
 // const split = /\s/;//regex for all whitespace
-const everything = webText
-  .split('') // Split everything into an array
-  .filter(item => regex.test(item)) // Filter out non numeric and non alphatbet values
-  .map(item => item.toLowerCase()) // Set everything to lowecase for better count
+// const everything = webText
+//   .split('') // Split everything into an array
+//   .filter(item => regex.test(item)) // Filter out non numeric and non alphatbet values
+//   .map(item => item.toLowerCase()) // Set everything to lowecase for better count
+//   .reduce((total, item) => {
+//         total[`${item}`] = total[`${item}`] + 1 || 1;
+//         return total;
+//   }, {}); // Create an object with each letter and numbers as properties and their count as values
+// console.log(Object.entries(everything).sort((a, b) => a[1] - b[1]));
+const countedLetters = webText
+  .split('')
+  .filter(item => regex.test(item))
+  .map(item => item.toLowerCase())
   .reduce((total, item) => {
         total[`${item}`] = total[`${item}`] + 1 || 1;
         return total;
-  }, {}); // Create an object with each letter and numbers as properties and their count as values
-console.log(Object.entries(everything).sort((a, b) => a[1] - b[1]));
-  </script>
+  }, {});
+const letters = [
+  ['d', 1],
+  ['e', 3],
+  ['s', 2],
+];
+letters.sort((a, b) => a[1] - b[1]);
+      </script>
 </body>
 
 </html>

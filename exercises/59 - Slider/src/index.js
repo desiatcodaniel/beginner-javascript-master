@@ -55,7 +55,7 @@ function Slider(sliderEl) {
   addClasses();
 
   // Event listeners
-  prevBtn.addEventListener('click', e => move('back'));
+  prevBtn.addEventListener('click', () => move('back'));
   nextBtn.addEventListener('click', move);
 }
 
