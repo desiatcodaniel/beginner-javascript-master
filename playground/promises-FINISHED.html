@@ -10,84 +10,97 @@
 
 <body>
   <script>
-    function makePizza(toppings = []) {
-      return new Promise(function (resolve, reject) {
-        // reject if people try with pineapple
+    function makePizza(toppings) {
+      // Make pizza creation based on the amount of toppings
+      const timer = 500 + toppings.length * 500;
+      // create a promise to return
+      return new Promise(function(resolve, reject) {
+        // Check for something that's wrong with the pizza - Reject pineapple
         if (toppings.includes('pineapple')) {
-          reject('Seriously? Get out 🍍');
+          reject('Get out of here!');
         }
-        const amountOfTimeToBake = 500 + (toppings.length * 200);
-        // wait 1 second for the pizza to cook:
-        setTimeout(function () {
-          // when you are ready, you can resolve this promise
-          resolve(`Here is your pizza 🍕 with the toppings ${toppings.join(' ')}`);
-        }, amountOfTimeToBake);
-        // if something went wrong, we can reject this promise;
+        // Resolve promise after a given amount of time
+        setTimeout(function() {
+          resolve(`Here is your pizza with ${toppings.join(' ')}`);
+        }, timer);
       });
     }
 
-    // console.log('First');
-    makePizza(['pepperoni'])
-      .then(function (pizza) {
-        console.log(pizza);
-        return makePizza(['ham', 'cheese']);
-      })
-      .then(function (pizza) {
-        console.log(pizza);
-        return makePizza(['hot peppers', 'onion', 'feta']);
-      })
-      .then(function (pizza) {
-        console.log(pizza);
-        return makePizza(['pineapple']);
-      })
-      .then(function (pizza) {
-        console.log(pizza);
-        return makePizza(['one', 'two', 'three', 'four', 'one', 'two', 'three', 'four', 'one', 'two', 'three', 'four']);
-      }).then(pizza => {
-        console.log('All done! here is your last pizza');
-        console.log(pizza);
-      })
-      .catch(handleError)
+    // Call the promise function and do something about it using .then chain
+//   console.log(`Started making pepperoni`);
+//   makePizza(['pepperoni'])
+// .then(function(pizza) {
+//       console.log(pizza);
+//       console.log(`Started making cheese sausage`);
+//       return makePizza(['cheese', 'sausage']);
+//     })
+// .then(function(pizza) {
+//       console.log(pizza);
+//       console.log(`ham 1234`);
+//       return makePizza(['ham', '1', '2', '3', '4']);
+//     })
+// .then(function(pizza) {
+//       console.log(pizza);
+//       console.log(`Started making cheese`);
+//       return makePizza(['cheese']);
+//     })
+// .then(function(pizza) {
+//       console.log(pizza);
+//       console.log(`Started making cheese sausage hot sauce`);
+//       return makePizza(['cheese', 'sausage', 'hot sauce']);
+//     })
+// .then(function(pizza) {
+//       console.log(pizza);
+//       console.log(`Started making cheese pineapple 3`);
+//       return makePizza(['cheese', 'pineapple', '3']);
+// })
+// .then(function(pizza) {
+//       console.log(pizza);
+// });
 
-    // console.log('Right after');
+    // Make a 'mega' promise
+    // const pizzaPromise = makePizza(['cheese', 'pineapple', '3']);
+    // const pizzaPromise2 = makePizza(['ham', '1', '2', '3', '4']);
+    // const pizzaPromise3 = makePizza(['pepperoni']);
+    // // Use all method to only do something about the promises after everything has been resolved
+    // const dinnerPromise = Promise.all([pizzaPromise, pizzaPromise2, pizzaPromise3]);
 
-    // Run them Concurrently
-    // const pizzaPromise1 = makePizza(['hot peppers', 'onion', 'feta']);
-    // const pizzaPromise2 = makePizza(['one', 'two', 'three', 'four', 'one', 'two', 'three', 'four', 'one', 'two', 'three', 'four']);
-    // const pizzaPromise3 = makePizza(['ham', 'cheese']);
-
-    // const dinnerPromise = Promise.all([pizzaPromise1, pizzaPromise2, pizzaPromise3]);
-
-    // dinnerPromise.then(function ([hottie, garbagePail, hamAndCheese]) {
-    //   console.log(hottie, garbagePail, hamAndCheese);
+    // // Do something about the resolved/rejected promises
+    // dinnerPromise.then(pizzas => {
+    //   // Will still be the same order as it was entered in the array
+    //   const [pizza1, pizza2, pizza3] = pizzas;
+    //   console.log(pizza1);
+    //   console.log(pizza2);
+    //   console.log(pizza3);
     // });
 
-    // const firstPizzaPromise = Promise.race([pizzaPromise1, pizzaPromise2, pizzaPromise3]);
+    // // Do something about the promises as they finish (first come first serve)
+    // const firstPizza = Promise.race([pizzaPromise, pizzaPromise2, pizzaPromise3]);
 
-    // firstPizzaPromise.then(pizza => {
-    //   console.log('You must be hungry, here is the first one ready');
+    // firstPizza.then(pizza => {
     //   console.log(pizza);
-    // })
+    // });
 
-    function handleError(err) {
-      console.log('Ohh noooo!!');
-      console.log(err);
-    }
+// No matter how many thens is included in a promise chain, only one catch needs to be included.
+function handleError(err) {
+      console.log('Fake pizza alert!');
+  console.log(err);
+}
+makePizza(['cheese', 'pineapple'])
+  .then(pizza => {
+    // Will run when successful
+    console.log(pizza);
+      })
+  .catch(handleError);
 
-    makePizza(['cheese', 'pineapple'])
-      .then(pizza => {
-        console.log(pizza);
-      }).catch(handleError)
+const p1 = makePizza(['hotdog']);
+const p2 = makePizza(['pineapple']);
 
-
-    const p1 = makePizza(['pep']);
-    const p2 = makePizza(['pineapple']);
-
-    const dinnerPromise2 = Promise.allSettled([p1, p2]);
-
-    dinnerPromise2.then(results => {
-      console.log(results);
-    })
+// Promise allSettled will run all promises even if one breaks
+const dinnerPromise2 = Promise.allSettled([p2, p1]);
+dinnerPromise2.then(results => {
+  console.log(results);
+});
   </script>
 </body>
 
