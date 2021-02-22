@@ -567,10 +567,10 @@ TermsPrivacyCookies
 
     function instanceCounter(counts, char) {
       counts[char]
-        // if exists
-        ? counts[char] = counts[char] + 1
-        // if does not exist
-        : counts[char] = 1;
+        ? // if exists
+          (counts[char] = counts[char] + 1)
+        : // if does not exist
+          (counts[char] = 1);
 
       return counts;
     }
@@ -584,11 +584,8 @@ TermsPrivacyCookies
     function sortByValue(a, b) {
       return a[1] - b[1];
     }
-    const sortedResult = Object
-      .entries(result)
-      .sort(sortByValue);
+    const sortedResult = Object.entries(result).sort(sortByValue);
     console.log(sortedResult);
-
   </script>
 </body>
 

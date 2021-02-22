@@ -11,20 +11,20 @@
 <body>
   <script>
     function wait(ms = 0) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         setTimeout(resolve, ms);
-      })
+      });
     }
 
     function makePizza(toppings = []) {
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         // reject if people try with pineapple
         if (toppings.includes('pineapple')) {
           reject('Seriously? Get out 🍍');
         }
-        const amountOfTimeToBake = 500 + (toppings.length * 200);
+        const amountOfTimeToBake = 500 + toppings.length * 200;
         // wait 1 second for the pizza to cook:
-        setTimeout(function () {
+        setTimeout(function() {
           // when you are ready, you can resolve this promise
           resolve(`Here is your pizza 🍕 with the toppings ${toppings.join(' ')}`);
         }, amountOfTimeToBake);
@@ -33,31 +33,29 @@
     }
 
     function handleError(err) {
-      console.log('ohhh noooo');
+      console.log('An error has been caught');
       console.log(err);
     }
 
-    function handleDisgustingPizza() {
-
-    }
+    // Try catch will not break the program and instead do the catch part if there is something wrong with the code inside try
+    // Marking a function as async will immediately set it to always return a promise so .then and .catch can be used on async function themselves instead of inside them
     async function go() {
-      const pizza = await makePizza(['pineapple']).catch(handleDisgustingPizza);
-      return pizza;
+      const pizza = await makePizza(['pineapple']);
     }
 
-    // catch it at run time
+    // Catch errors during function calls or in await phase
     go().catch(handleError);
-    // make a safe function with a HOF
+
+    // Alternative way using Higher Order Function
+    // This is DRY principle instead of writing catch handleError in all functions
     function makeSafe(fn, errorHandler) {
-      return function () {
-        fn().catch(errorHandler)
-      }
+      return function() {
+        // Return a function that calls an async/regular function and catches errors using a specified errorHandling function
+        fn().catch(errorHandler);
+      };
     }
-
     const safeGo = makeSafe(go, handleError);
-
     safeGo();
-
   </script>
 </body>
 
