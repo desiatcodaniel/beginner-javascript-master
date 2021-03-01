@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APIs</title>
+  </head>
+
+  <body>
+    <div class="user">
+
+    </div>
+    <script>
+        const userEl = document.querySelector('.user');
+        // errorHandling function
+        const handleError = err => {
+          console.log('best handler ever', err);
+          userEl.textContent = 'SOMETHING IS WRONG...';
+        };
+        // End point is the term for the url that you need to visit to get the data
+        const user = 'desiatcodaniel';
+
+        // Axios or fetch library to get the data
+        // const danielPromise = fetch(endpoint);
+        // Do something about the promise
+        // Double promise, First promise gets the response, Second promise gets the data from the returned json
+//         danielPromise
+//   .then(response => response.json())
+//   .then(data => {
+//             console.log(data, data.blog, data.name, data.location);
+//             userEl.textContent = `${data.name},
+//             ${data.blog ? data.blog : 'no blog'},
+//             ${data.location}`;
+//           })
+//   .catch(handleError);
+
+// Await version
+const displayUser = async userName => {
+  // Set initial value to loading
+  const endpoint = `https://api.grubhub.com/users/${userName}`;
+  userEl.textContent = 'loading...';
+  const response = await fetch(endpoint);
+  const data = await response.json();
+  console.log(data);
+  userEl.textContent = `${data.name},
+    ${data.blog ? data.blog : 'NO BLOG HERE'},
+    ${data.location}`;
+};
+
+displayUser(user).catch(handleError);
+    </script>
+  </body>
+</html>
