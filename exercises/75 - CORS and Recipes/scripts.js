@@ -1,45 +1,31 @@
+// Set base endpoint of the api
 const baseEndpoint = 'http://www.recipepuppy.com/api';
-const proxy = `https://cors-anywhere.herokuapp.com/`;
+const proxy = 'https://cors-anywhere.herokuapp.com/';
 const form = document.querySelector('form.search');
-const recipesGrid = document.querySelector('.recipes');
-
-async function fetchRecipes(query) {
+// Create function to fetch recipe
+const fetchRecipe = async query => {
+  // Fetch the API
   const res = await fetch(`${proxy}${baseEndpoint}?q=${query}`);
+  // Translate it to json
   const data = await res.json();
   return data;
-}
+};
+// will be block by Cross Origin Resource Sharing (CORS)
+// CO - domain names (origin) by default, data from different origins are not allowed
+// RS - CORS policy must happen on the server to allow cross origin resource sharing.
+// e.g. github.com is allowed to access data from codepen based on the user's authorization
+// Need to run from a server
+// Need to put something in between localhost and endpoint - CORS Proxy - cors-anywhere-herokuapp.com
 
-async function handleSubmit(event) {
-  event.preventDefault();
-  const el = event.currentTarget;
-  console.log(form.query.value);
-  fetchAndDisplay(form.query.value);
-}
+const handleSubmit = async e => {
+  e.preventDefault();
+  const submitedForm = e.currentTarget;
+  // Turn the button to unclickable
+  submitedForm.submit.disabled = true;
 
-async function fetchAndDisplay(query) {
-  // turn the form off
-  form.submit.disabled = true;
-  // submit the search
-  const recipes = await fetchRecipes(query);
+  const recipes = await fetchRecipe(submitedForm.query.value);
   console.log(recipes);
-  form.submit.disabled = false;
-  displayRecipes(recipes.results);
-}
-
-function displayRecipes(recipes) {
-  console.log('Creating HTML');
-  const html = recipes.map(
-    recipe => `<div class="recipe">
-      <h2>${recipe.title}</h2>
-      <p>${recipe.ingredients}</p>
-      ${recipe.thumbnail &&
-        `<img src="${recipe.thumbnail}" alt="${recipe.title}"/>`}
-      <a href="${recipe.href}">View Recipe →</a>
-    </div>`
-  );
-  recipesGrid.innerHTML = html.join('');
-}
+  submitedForm.submit.disabled = false;
+};
 
 form.addEventListener('submit', handleSubmit);
-// on page load run it with pizza
-fetchAndDisplay('pizza');
