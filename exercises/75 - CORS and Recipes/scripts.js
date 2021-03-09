@@ -21,12 +21,15 @@ const fetchRecipe = async query => {
 const handleSubmit = async e => {
   e.preventDefault();
   const submitedForm = e.currentTarget;
-  // Turn the button to unclickable
-  submitedForm.submit.disabled = true;
+  fetchAndDisplay(form.query.value);
+};
 
-  const recipes = await fetchRecipe(submitedForm.query.value);
+const fetchAndDisplay = async query => {
+  // Turn the button to unclickable
+  form.submit.disabled = true;
+  const recipes = await fetchRecipe(query);
   displayRecipe(recipes.results);
-  submitedForm.submit.disabled = false;
+  form.submit.disabled = false;
 };
 
 const displayRecipe = recipes => {
@@ -43,3 +46,5 @@ const displayRecipe = recipes => {
 };
 
 form.addEventListener('submit', handleSubmit);
+// On page load run it with 'adobo'
+fetchAndDisplay('adobo');
