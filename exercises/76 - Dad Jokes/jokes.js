@@ -1,3 +1,6 @@
+const jokeBtn = document.querySelector('.getJoke');
+const jokeHolder = document.querySelector('.joke p');
+
 const buttonText = [
   'Ugh.',
   '🤦🏻‍♂️',
@@ -8,3 +11,10 @@ const buttonText = [
   'please stop',
   'that was the worst one',
 ];
+
+async function fetchJoke() {
+  const response = await fetch('https://icanhazdadjoke.com/');
+  console.log(response);
+}
+
+fetchJoke();
