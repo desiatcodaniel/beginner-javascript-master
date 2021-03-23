@@ -1,3 +1,5 @@
+// import 'regenerator-runtime/runtime';
+
 const wait = async (ms = 0) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Create a random number generator to make the typing effect look more natural

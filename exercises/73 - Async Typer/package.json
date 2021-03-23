@@ -1,0 +1,14 @@
+{
+  "name": "type",
+  "version": "1.0.0",
+  "description": "typer",
+  "main": "scripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": [
+    "since 2017-06"
+  ]
+}
