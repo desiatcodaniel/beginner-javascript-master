@@ -1,0 +1,14 @@
+{
+  "name": "converter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "money-FINISHED.js",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": [
+    "last 1 chrome versions"
+  ]
+}

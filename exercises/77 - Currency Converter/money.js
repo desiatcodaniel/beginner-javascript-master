@@ -32,9 +32,18 @@ const currencies = {
   ZAR: 'South African Rand',
   EUR: 'Euro',
 };
+// Define endpoint for the API
+const endpoint = 'https://api.exchangeratesapi.io/latest';
+
+// Select form element
+const form = document.querySelector('form');
 
 // Select all select tags
-const selects = document.querySelectorAll('select');
+const selectFrom = document.querySelector('[name="from_currency"]');
+const selectTo = document.querySelector('[name="to_currency"]');
+
+// Select the resulting value element
+const conversionBox = document.querySelector('.to_amount');
 
 // Create a function that will populate the options
 const generateOptions = options => {
@@ -49,11 +58,27 @@ const generateOptions = options => {
   return optionsArray.join('');
 };
 
-// Generate all items
-const optionsHTML = generateOptions(currencies);
-console.log(optionsHTML);
+// Create a function that will fetch data from API
+const fetchRate = async (base, symbol) => {
+  const response = await fetch(`${endpoint}?base=${base}&symbols=${symbol}`);
+  const data = await response.json();
+  return data.rates[symbol].toFixed(2);
+};
+
+const handleSubmit = async e => {
+  e.preventDefault();
+  const { value } = e.target.querySelector('input');
+  const rate = await fetchRate(selectFrom.value, selectTo.value);
+  // Call convert function
+  conversionBox.innerText = (rate * value).toFixed(2);
+};
 
 // Use the generated items to add to html
-selects.forEach(select => {
-  select.innerHTML = optionsHTML;
-});
+selectFrom.innerHTML = generateOptions(currencies);
+selectTo.innerHTML = generateOptions(currencies);
+
+// Call function to fetch data
+fetchRate('USD', 'PHP');
+
+// Listen to submit
+form.addEventListener('submit', handleSubmit);
