@@ -1,3 +1,17 @@
+// Define endpoint for the API and object to cache the rates
+const endpoint = 'https://api.exchangeratesapi.io/latest';
+const ratesCache = {};
+
+// Select form element
+const form = document.querySelector('form');
+
+// Select all select tags
+const selectFrom = document.querySelector('[name="from_currency"]');
+const selectTo = document.querySelector('[name="to_currency"]');
+
+// Select the resulting value element
+const conversionBox = document.querySelector('.to_amount');
+
 const currencies = {
   USD: 'United States Dollar',
   AUD: 'Australian Dollar',
@@ -32,19 +46,6 @@ const currencies = {
   ZAR: 'South African Rand',
   EUR: 'Euro',
 };
-// Define endpoint for the API
-const endpoint = 'https://api.exchangeratesapi.io/latest';
-
-// Select form element
-const form = document.querySelector('form');
-
-// Select all select tags
-const selectFrom = document.querySelector('[name="from_currency"]');
-const selectTo = document.querySelector('[name="to_currency"]');
-
-// Select the resulting value element
-const conversionBox = document.querySelector('.to_amount');
-
 // Create a function that will populate the options
 const generateOptions = options => {
   // Create an array to save the values
@@ -60,10 +61,18 @@ const generateOptions = options => {
 
 // Create a function that will fetch data from API
 const fetchRate = async base => {
-  const response = await fetch(`${endpoint}?base=${base}`);
+  const response = await fetch(`${endpoint}?base=${base}`).catch(handleError);
   const data = await response.json();
-  return data.rates;
+  ratesCache[base] = data;
 };
+
+// Create proper format currency
+function formatCurrency(amount, currency) {
+  return Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  }).format(amount);
+}
 
 // Create error handler for async await
 const handleError = err => {
@@ -72,20 +81,23 @@ const handleError = err => {
 };
 
 // Create function to convert rates into total
-const convert = (currentRates, toCurrency, value) =>
-  currentRates[toCurrency] * value;
+const convert = async (fromCurrency, toCurrency, value) => {
+  if (!ratesCache[fromCurrency]) {
+    console.log('No rate found, fetching rate sheet');
+    await fetchRate(fromCurrency);
+  }
+  console.log(ratesCache[fromCurrency].rates[toCurrency] * value);
+  return ratesCache[fromCurrency].rates[toCurrency] * value;
+};
 
 // Create function to handle input changes
 const handleInput = async e => {
   e.preventDefault();
   const { value } = e.currentTarget.querySelector('input');
-  const rates = await fetchRate(selectFrom.value).catch(handleError);
+  const converted = await convert(selectFrom.value, selectTo.value, value);
+
   // Call convert function
-  conversionBox.textContent = `${selectTo.value} - ${convert(
-    rates,
-    selectTo.value,
-    value
-  ).toFixed(2)}`;
+  conversionBox.textContent = formatCurrency(converted, selectTo.value);
 };
 
 // Use the generated items to add to html
