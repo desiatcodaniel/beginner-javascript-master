@@ -59,26 +59,38 @@ const generateOptions = options => {
 };
 
 // Create a function that will fetch data from API
-const fetchRate = async (base, symbol) => {
-  const response = await fetch(`${endpoint}?base=${base}&symbols=${symbol}`);
+const fetchRate = async base => {
+  const response = await fetch(`${endpoint}?base=${base}`);
   const data = await response.json();
-  return data.rates[symbol].toFixed(2);
+  return data.rates;
 };
 
-const handleSubmit = async e => {
+// Create error handler for async await
+const handleError = err => {
+  console.log('There is a problem handling the request');
+  console.log(err);
+};
+
+// Create function to convert rates into total
+const convert = (currentRates, toCurrency, value) =>
+  currentRates[toCurrency] * value;
+
+// Create function to handle input changes
+const handleInput = async e => {
   e.preventDefault();
-  const { value } = e.target.querySelector('input');
-  const rate = await fetchRate(selectFrom.value, selectTo.value);
+  const { value } = e.currentTarget.querySelector('input');
+  const rates = await fetchRate(selectFrom.value).catch(handleError);
   // Call convert function
-  conversionBox.innerText = (rate * value).toFixed(2);
+  conversionBox.textContent = `${selectTo.value} - ${convert(
+    rates,
+    selectTo.value,
+    value
+  ).toFixed(2)}`;
 };
 
 // Use the generated items to add to html
 selectFrom.innerHTML = generateOptions(currencies);
 selectTo.innerHTML = generateOptions(currencies);
 
-// Call function to fetch data
-fetchRate('USD', 'PHP');
-
 // Listen to submit
-form.addEventListener('submit', handleSubmit);
+form.addEventListener('input', handleInput);
