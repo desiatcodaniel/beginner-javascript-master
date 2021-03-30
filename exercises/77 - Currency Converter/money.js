@@ -1,14 +1,11 @@
 // Define endpoint for the API and object to cache the rates
 const endpoint = 'https://api.exchangeratesapi.io/latest';
 const ratesCache = {};
-
 // Select form element
 const form = document.querySelector('form');
-
 // Select all select tags
 const selectFrom = document.querySelector('[name="from_currency"]');
 const selectTo = document.querySelector('[name="to_currency"]');
-
 // Select the resulting value element
 const conversionBox = document.querySelector('.to_amount');
 
@@ -58,14 +55,12 @@ const generateOptions = options => {
   }
   return optionsArray.join('');
 };
-
 // Create a function that will fetch data from API
 const fetchRate = async base => {
   const response = await fetch(`${endpoint}?base=${base}`).catch(handleError);
   const data = await response.json();
   return data;
 };
-
 // Create proper format currency
 function formatCurrency(amount, currency) {
   return Intl.NumberFormat('en-US', {
@@ -73,13 +68,11 @@ function formatCurrency(amount, currency) {
     currency,
   }).format(amount);
 }
-
 // Create error handler for async await
 const handleError = err => {
   console.log('There is a problem handling the request');
   console.log(err);
 };
-
 // Create function to convert rates into total
 const convert = async (fromCurrency, toCurrency, value) => {
   if (!ratesCache[fromCurrency]) {
@@ -89,20 +82,16 @@ const convert = async (fromCurrency, toCurrency, value) => {
   console.log(ratesCache[fromCurrency].rates[toCurrency] * value);
   return ratesCache[fromCurrency].rates[toCurrency] * value;
 };
-
 // Create function to handle input changes
 const handleInput = async e => {
   e.preventDefault();
   const { value } = e.currentTarget.querySelector('input');
   const converted = await convert(selectFrom.value, selectTo.value, value);
-
   // Call convert function
   conversionBox.textContent = formatCurrency(converted, selectTo.value);
 };
-
 // Use the generated items to add to html
 selectFrom.innerHTML = generateOptions(currencies);
 selectTo.innerHTML = generateOptions(currencies);
-
 // Listen to submit
 form.addEventListener('input', handleInput);
