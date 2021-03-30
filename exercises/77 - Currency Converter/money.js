@@ -63,7 +63,7 @@ const generateOptions = options => {
 const fetchRate = async base => {
   const response = await fetch(`${endpoint}?base=${base}`).catch(handleError);
   const data = await response.json();
-  ratesCache[base] = data;
+  return data;
 };
 
 // Create proper format currency
@@ -83,8 +83,8 @@ const handleError = err => {
 // Create function to convert rates into total
 const convert = async (fromCurrency, toCurrency, value) => {
   if (!ratesCache[fromCurrency]) {
-    console.log('No rate found, fetching rate sheet');
-    await fetchRate(fromCurrency);
+    console.log(`No rate found, fetching rate sheet for ${fromCurrency}`);
+    ratesCache[fromCurrency] = await fetchRate(fromCurrency);
   }
   console.log(ratesCache[fromCurrency].rates[toCurrency] * value);
   return ratesCache[fromCurrency].rates[toCurrency] * value;
