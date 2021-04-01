@@ -27,15 +27,16 @@ async function fetchJoke() {
 }
 
 function randomItemFromArray(arr, not) {
-  const item = arr[Math.floor(Math.random * arr.length - 1)];
-  console.log(item);
-  if (item === not) return randomItemFromArray(arr, not);
-
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  console.log(randomIndex);
+  let item = arr[randomIndex];
+  if (item === not) item = randomItemFromArray(arr, not);
   return item;
 }
 
 const handleClick = async e => {
   // Select to toggle the loader animation
+  console.log(e.currentTarget);
   const loader = e.currentTarget.querySelector('.loader');
   loader.classList.toggle('hidden');
   // Need to put await since it needs the data before moving forward
@@ -43,8 +44,7 @@ const handleClick = async e => {
   // Replace html content
   jokeHolder.textContent = joke;
   loader.classList.toggle('hidden');
-  // Replace content of the button without using duplicates
-  console.log(e.target);
+  // // Replace content of the button without using duplicates
   e.target.textContent = randomItemFromArray(buttonText, e.target.textContent);
 };
 
