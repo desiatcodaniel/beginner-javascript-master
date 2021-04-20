@@ -1,7 +1,6 @@
 {
   "name": "web-speech-colours",
   "version": "1.0.0",
-  "description": "",
   "main": "colors.js",
   "scripts": {
     "start": "parcel index.html"
@@ -12,6 +11,8 @@
     "last 1 chrome versions"
   ],
   "devDependencies": {
-    "parcel-bundler": "^1.12.4"
-  }
+    "parcel-bundler": "^1.12.5"
+  },
+  "dependencies": {},
+  "description": ""
 }
